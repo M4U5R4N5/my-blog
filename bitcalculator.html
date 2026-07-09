@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Bit to Byte Calculator</h1>
+
+<p>What do you want to calculate?</p>
+
+<form>
+  <input type="radio" id="bit2byte" name="calcselect" value="bit2byte">
+  <label for="bit2byte">From bit to byte</label><br>
+  <input type="radio" id="byte2bit" name="calcselect" value="byte2bit">
+  <label for="byte2bit">From byte to bit</label><br><br>
+  <label for="inputfield">Input:</label><br>
+  <input type="text" id="inputfield" name="inputfield" maxlength=8><br><br>
+  <button type="button" onclick="startCalculate()">Calculate</button><br><br>
+</form>
+
+<form>
+  <label for="outputfield">Output:</label><br>
+  <textarea readonly name="outputfield" id="outputfield" rows="2" cols="50">
+  Choose what you want to calculate and press "Calculate".
+  </textarea>
+</form>
+
+<script>
+
+function startCalculate() {
+  const selected = document.querySelector('input[name="calcselect"]:checked');
+  
+  if (selected) {
+    let calcid = selected.value;
+    if (calcid == 'bit2byte') {
+      document.getElementById('outputfield').textContent = bit2byte(document.getElementById('inputfield').value);
+    } else {
+      document.getElementById('outputfield').textContent = byte2bit(document.getElementById('inputfield').value);
+    }
+  } else {
+    document.getElementById('outputfield').textContent = "Select a calculation option";
+  }
+}
+
+
+function bit2byte(input) {
+  let count = 0;
+  let output = 0;
+  for (let i = input.length - 1; i >= 0; i--) {
+    if (input[i] === '1') {
+      output += 2**count;
+      console.log(i, count, output);
+    }
+    count += 1;
+  }
+  return String(output);
+}
+
+
+function byte2bit(input) {
+  if (input < 0 || input > 255 ) {
+    return "Invalid input, choose a value between 0 and 255!";
+  }
+  let count = 7;
+  let remainder = input;
+  let output = "";
+  while (count >= 0) {
+    if (remainder >= 2**count) {
+      output += '1';
+      remainder -= 2**count;
+    } else {
+      output += '0';
+    }
+    count -= 1;
+    console.log(count+1, output);
+  }
+  return String(output);
+}
+
+</script>
+
+</body>
+</html>
